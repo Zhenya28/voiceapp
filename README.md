@@ -252,33 +252,3 @@ surge
 2. Przycisk "Udostępnij"
 3. "Dodaj do ekranu początkowego"
 
-## 🔧 Konfiguracja
-
-### Zmiana języka rozpoznawania mowy
-
-W pliku `js/app.js`, linia ~65:
-```javascript
-recognition.lang = 'pl-PL'; // Zmień na np. 'en-US'
-```
-
-### Zmiana kolorów motywu
-
-W pliku `css/style.css`, sekcja `:root`:
-```css
---primary: #6c5ce7;      /* Główny kolor */
---bg-dark: #0f0f1a;      /* Tło */
-```
-
-## 👤 Autor
-
-**[Twoje Imię]**
-- GitHub: [@twoj-username](https://github.com/twoj-username)
-- Email: twoj@email.com
-
-## 📄 Licencja
-
-Ten projekt jest udostępniony na licencji MIT.
-
----
-
-⭐ Jeśli projekt Ci się podoba, zostaw gwiazdkę na GitHubie!
