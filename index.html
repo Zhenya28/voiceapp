@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="VoiceNotes - Notatnik głosowy PWA" />
+    <meta name="theme-color" content="#1a1a2e" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="VoiceNotes" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icons/icon-192.png" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <title>VoiceNotes - Notatnik Głosowy</title>
+  </head>
+  <body>
+    <!-- Offline Banner -->
+    <div id="offline-banner" class="offline-banner hidden">
+      Jesteś offline - notatki są zapisywane lokalnie
+    </div>
+
+    <!-- ============== WIDOK 1: Lista notatek ============== -->
+    <section id="view-list" class="view active">
+      <header class="header">
+        <h1>VoiceNotes</h1>
+        <p class="subtitle">Twój notatnik głosowy</p>
+      </header>
+
+      <!-- Wyszukiwarka -->
+      <div class="search-container">
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Szukaj notatek..."
+        />
+      </div>
+
+      <!-- Lista notatek -->
+      <div id="notes-list" class="notes-list">
+        <!-- Notatki będą generowane przez JavaScript -->
+      </div>
+
+      <!-- Pusta lista -->
+      <div id="empty-state" class="empty-state">
+        <h2>Brak notatek</h2>
+        <p>Kliknij przycisk mikrofonu, aby nagrać pierwszą notatkę</p>
+      </div>
+
+      <!-- Przycisk dodawania -->
+      <button id="btn-add-note" class="fab" aria-label="Dodaj notatkę">
+        <span class="fab-icon">🎤</span>
+      </button>
+    </section>
+
+    <!-- ============== WIDOK 2: Nagrywanie notatki ============== -->
+    <section id="view-record" class="view">
+      <header class="header">
+        <button id="btn-back-record" class="btn-back" aria-label="Wróć">
+          ← Wróć
+        </button>
+        <h1>Nowa notatka</h1>
+      </header>
+
+      <div class="record-container">
+        <!-- Wskaźnik nagrywania -->
+        <div id="record-indicator" class="record-indicator">
+          <div class="pulse-ring"></div>
+          <div class="mic-icon">🎤</div>
+        </div>
+
+        <!-- Status -->
+        <p id="record-status" class="record-status">
+          Kliknij mikrofon, aby rozpocząć dyktowanie
+        </p>
+
+        <!-- Transkrypcja na żywo -->
+        <div class="transcript-container">
+          <label for="transcript">Twoja notatka:</label>
+          <textarea
+            id="transcript"
+            class="transcript-area"
+            placeholder="Tekst pojawi się tutaj podczas mówienia..."
+          ></textarea>
+        </div>
+
+        <!-- Przyciski akcji -->
+        <div class="record-actions">
+          <button id="btn-record" class="btn-record" aria-label="Nagrywaj">
+            <span class="btn-record-text">Rozpocznij</span>
+          </button>
+        </div>
+
+        <!-- Tytuł notatki -->
+        <div class="note-title-container">
+          <label for="note-title">Tytuł notatki:</label>
+          <input
+            type="text"
+            id="note-title"
+            class="note-title-input"
+            placeholder="Wpisz tytuł..."
+          />
+        </div>
+
+        <!-- Zapisz -->
+        <button id="btn-save-note" class="btn-save" disabled>
+          Zapisz notatkę
+        </button>
+      </div>
+    </section>
+
+    <!-- ============== WIDOK 3: Szczegóły notatki ============== -->
+    <section id="view-detail" class="view">
+      <header class="header">
+        <button id="btn-back-detail" class="btn-back" aria-label="Wróć">
+          ← Wróć
+        </button>
+        <h1 id="detail-title">Szczegóły</h1>
+      </header>
+
+      <div class="detail-container">
+        <!-- Informacje o notatce -->
+        <div class="detail-meta">
+          <span id="detail-date" class="detail-date"></span>
+        </div>
+
+        <!-- Edytowalny tytuł -->
+        <div class="detail-section">
+          <label for="detail-title-input">Tytuł:</label>
+          <input
+            type="text"
+            id="detail-title-input"
+            class="detail-title-input"
+          />
+        </div>
+
+        <!-- Treść notatki -->
+        <div class="detail-section">
+          <label for="detail-content">Treść:</label>
+          <textarea id="detail-content" class="detail-content"></textarea>
+        </div>
+
+        <!-- Przyciski akcji -->
+        <div class="detail-actions">
+          <button id="btn-update-note" class="btn-update">Zapisz zmiany</button>
+          <button id="btn-delete-note" class="btn-delete">Usuń notatkę</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal powiadomień -->
+    <div id="notification-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Włącz powiadomienia</h2>
+        <p>Czy chcesz otrzymywać przypomnienia o notatkach?</p>
+        <div class="modal-actions">
+          <button id="btn-enable-notifications" class="btn-primary">
+            Tak, włącz
+          </button>
+          <button id="btn-skip-notifications" class="btn-secondary">
+            Może później
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+  </body>
+</html>
