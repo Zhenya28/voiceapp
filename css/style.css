@@ -1,6 +1,5 @@
 /* ============================================
    VoiceNotes PWA - Styles
-   Nowoczesny, ciemny design z gradientami
    ============================================ */
 
 /* ---------- CSS Variables (Kolory) ---------- */
@@ -53,7 +52,11 @@ html {
 }
 
 body {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    "Segoe UI",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   background: var(--bg-dark);
   color: var(--text-primary);
   min-height: 100vh;
@@ -69,7 +72,8 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       ellipse at top left,
       rgba(108, 92, 231, 0.15) 0%,
       transparent 50%

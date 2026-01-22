@@ -37,7 +37,7 @@ self.addEventListener("install", (event) => {
       })
       .catch((error) => {
         console.error("Błąd instalacji:", error);
-      })
+      }),
   );
 });
 
@@ -58,13 +58,13 @@ self.addEventListener("activate", (event) => {
             .map((name) => {
               console.log("Usuwanie starego cache:", name);
               return caches.delete(name);
-            })
+            }),
         );
       })
       .then(() => {
         // Przejmij kontrolę nad wszystkimi klientami
         return self.clients.claim();
-      })
+      }),
   );
 });
 
@@ -95,7 +95,6 @@ self.addEventListener("fetch", (event) => {
 
 /**
  * Cache First - najpierw sprawdza cache, potem sieć
- * Idealne dla: plików statycznych (HTML, CSS, JS, ikony)
  */
 async function cacheFirst(request) {
   try {
@@ -133,52 +132,6 @@ async function cacheFirst(request) {
       statusText: "Service Unavailable",
     });
   }
-}
-
-/**
- * Network First - najpierw sieć, potem cache
- * Idealne dla: danych API, dynamicznej zawartości
- * (Zachowane na przyszłość, gdy dodamy API)
- */
-async function networkFirst(request) {
-  try {
-    const networkResponse = await fetch(request);
-
-    if (networkResponse.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, networkResponse.clone());
-    }
-
-    return networkResponse;
-  } catch (error) {
-    const cachedResponse = await caches.match(request);
-
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-
-    throw error;
-  }
-}
-
-/**
- * Stale While Revalidate - zwróć cache, aktualizuj w tle
- * Idealne dla: często aktualizowanych zasobów
- */
-async function staleWhileRevalidate(request) {
-  const cache = await caches.open(CACHE_NAME);
-  const cachedResponse = await cache.match(request);
-
-  // Aktualizuj cache w tle
-  const fetchPromise = fetch(request).then((networkResponse) => {
-    if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
-    }
-    return networkResponse;
-  });
-
-  // Zwróć cache lub czekaj na sieć
-  return cachedResponse || fetchPromise;
 }
 
 // ==========================================
@@ -224,10 +177,3 @@ self.addEventListener("sync", (event) => {
     event.waitUntil(syncNotes());
   }
 });
-
-async function syncNotes() {
-  // Tu można dodać synchronizację z serwerem
-  console.log("Synchronizacja notatek...");
-}
-
-console.log("Service Worker załadowany");

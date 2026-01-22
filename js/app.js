@@ -62,16 +62,16 @@ const DOM = {
 document.addEventListener("DOMContentLoaded", () => {
   console.log("🎤 VoiceNotes PWA - Inicjalizacja");
 
-  // Rejestracja Service Worker
+  // Rejestracja Service Worker dla trybu off-line
   registerServiceWorker();
 
-  // Wczytaj notatki
+  // Wczytaj notatki z localStorage
   loadNotes();
 
   // Inicjalizacja rozpoznawania mowy
   initSpeechRecognition();
 
-  // Obsługa eventów
+  // podpina obsługę kliknięć
   setupEventListeners();
 
   // Sprawdź status online/offline
@@ -346,7 +346,7 @@ function renderNotesList(searchQuery = "") {
     ? notes.filter(
         (n) =>
           n.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          n.content.toLowerCase().includes(searchQuery.toLowerCase())
+          n.content.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : notes;
 
@@ -364,10 +364,10 @@ function renderNotesList(searchQuery = "") {
                 <h3 class="note-card-title">${escapeHtml(note.title)}</h3>
                 <p class="note-card-preview">${escapeHtml(note.content)}</p>
                 <time class="note-card-date">${formatDate(
-                  note.createdAt
+                  note.createdAt,
                 )}</time>
             </article>
-        `
+        `,
       )
       .join("");
 
@@ -554,7 +554,7 @@ function setupEventListeners() {
   // Powiadomienia
   DOM.btnEnableNotifications.addEventListener(
     "click",
-    requestNotificationPermission
+    requestNotificationPermission,
   );
   DOM.btnSkipNotifications.addEventListener("click", () => {
     DOM.notificationModal.classList.add("hidden");
@@ -571,15 +571,3 @@ function setupEventListeners() {
     }
   });
 }
-
-// ==========================================
-// DEBUG (do usunięcia w produkcji)
-// ==========================================
-
-console.log("VoiceNotes PWA załadowane");
-console.log(
-  "Speech Recognition:",
-  "SpeechRecognition" in window || "webkitSpeechRecognition" in window
-);
-console.log("Notifications:", "Notification" in window);
-console.log("Service Worker:", "serviceWorker" in navigator);
