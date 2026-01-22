@@ -251,7 +251,3 @@ surge
 1. Otwórz aplikację
 2. Przycisk "Udostępnij"
 3. "Dodaj do ekranu początkowego"
-
-
-
-
